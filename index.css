@@ -1,3 +1,12 @@
+header {
+    color: white;
+    background-color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 table, th, td {
   border: 1px solid black;
 }
@@ -69,4 +78,8 @@ button:hover {
 .short {
     display: flex;
     align-items: center;
+}
+
+#logic-canvas {
+    border: 1px solid #333;
 }

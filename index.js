@@ -26,6 +26,10 @@ const arrayShortText16 = [
   "1"
 ];
 
+const arrayShortText16Fix = [
+  "1"
+];
+
 const arrayGroup8 = [
   [0, 4, 12, 8, 1, 5, 13, 9], //hàng
   [1, 5, 13, 9, 3, 7, 15, 11],
@@ -46,6 +50,17 @@ const arrayShortText8 = [
   "B",
   "A",
   "B̄"
+];
+
+const arrayShortText8Fix = [
+  "G",
+  "D",
+  "C",
+  "H",
+  "E",
+  "B",
+  "A",
+  "F"
 ];
 
 const arrayGroup4 = [
@@ -102,6 +117,33 @@ const arrayShortText4 = [
   "AD̄"
 ];
 
+const arrayShortText4Fix = [
+  "GH",
+  "GD",
+  "CD",
+  "CH",
+  "EF",
+  "EB",
+  "AB",
+  "AF",
+  "EG",
+  "BG",
+  "AG",
+  "ED",
+  "BD",
+  "AD",
+  "EC",
+  "BC",
+  "AC",
+  "FH",
+  "FG",
+  "FD",
+  "FC",
+  "EH",
+  "BH",
+  "AH"
+];
+
 const arrayGroup2 = [
   [0, 4], [4, 12], [12, 8], [0, 8], //hàng
   [1, 5], [5, 13], [13, 9], [1, 9],
@@ -122,6 +164,17 @@ const arrayShortText2 = [
   "ĀBC̄", "ĀBD", "ĀBC", "ĀBD̄",
   "ABC̄", "ABD", "ABC", "ABD̄",
   "AB̄C̄", "AB̄D", "AB̄C", "AB̄D̄"
+];
+
+const arrayShortText2Fix = [
+  "EGH", "BGH", "AGH", "FGH",
+  "EGD", "BGD", "AGD", "FGD",
+  "ECD", "BCD", "ACD", "FCD",
+  "ECH", "BCH", "ACH", "FCH",
+  "EFG", "EFD", "EFC", "EFH",
+  "EBG", "EBD", "EBC", "EBH",
+  "ABG", "ABD", "ABC", "ABH",
+  "AFG", "AFD", "AFC", "AFH"
 ];
 
 const arrayGroup1 = [
@@ -148,9 +201,29 @@ const arrayShortText1 = [
   "ABCD"
 ]
 
+const arrayShortText1Fix = [
+  "EFGH",
+  "EFGD",
+  "EFCH",
+  "EFCD",
+  "EBGH",
+  "EBGD",
+  "EBCH",
+  "EBCD",
+  "AFGH",
+  "AFGD",
+  "AFCH",
+  "AFCD",
+  "ABGH",
+  "ABGD",
+  "ABCH",
+  "ABCD"
+]
+
 let arrayGroupTrue;
 let arrayIndexGroupTrue;
 let arraymfull;
+let arraym;
 
 const createLogic = () => {
   let logicText = "";
@@ -225,6 +298,48 @@ const addGroupTrue = (arrayGroupTrue, arrayGroup, arrayIndexGroupTrue) => {
   }
 }
 
+//fixing
+const handleDuplicateGroupTrue = (arrayGroupTrue, arrayIndexGroupTrue) => {
+  const count = {};
+  for(let i = 0; i < arraym.length; i++) {
+    count[arraym[i]] = 0;
+  }
+  for(let i = 0; i < arrayGroupTrue.length; i++){
+    for(let j = 0; j < arrayGroupTrue[i].length; j++){
+      const key = arrayGroupTrue[i][j];
+      count[key]++;
+    }
+  }
+  for(let i = 0; i < arrayGroupTrue.length; i++){
+    if(arrayGroupTrue[i].length === 4){  //xử lý trường hợp group 4 ô
+      if(
+          count[arrayGroupTrue[i][0]] >= 2 &&
+          count[arrayGroupTrue[i][1]] >= 2 &&
+          count[arrayGroupTrue[i][2]] >= 2 &&
+          count[arrayGroupTrue[i][3]] >= 2
+        ){
+          arrayGroupTrue.splice(i, 1);
+          for(let k = 0; k < arrayGroup4.length; k++){
+            if(
+              arrayGroup4[k].includes(arrayGroupTrue[i][0]) &&
+              arrayGroup4[k].includes(arrayGroupTrue[i][1]) &&
+              arrayGroup4[k].includes(arrayGroupTrue[i][2]) &&
+              arrayGroup4[k].includes(arrayGroupTrue[i][3])
+            ){
+              const indexDuplicate = arrayIndexGroupTrue.indexOf(k);
+              arrayIndexGroupTrue[2].splice(indexDuplicate, 1); //index và giá trị quá phức tạp để nhớ cho lần sau
+            }
+          }
+        }
+    }
+  }
+  
+}
+
+let arrayShortTextTrue = [];
+let arrayShortTextTrueFix = [];
+
+
 const createGroupTrue = () => {
   arrayGroupTrue = [];
   arrayIndexGroupTrue = [[],[],[],[],[]];
@@ -233,6 +348,8 @@ const createGroupTrue = () => {
   addGroupTrue(arrayGroupTrue, arrayGroup4, arrayIndexGroupTrue);
   addGroupTrue(arrayGroupTrue, arrayGroup2, arrayIndexGroupTrue);
   addGroupTrue(arrayGroupTrue, arrayGroup1, arrayIndexGroupTrue);
+
+  handleDuplicateGroupTrue(arrayGroupTrue, arrayIndexGroupTrue);
 
   let mShortText = "= ";
   for(let i = 0; i < arrayGroupTrue.length; i++){
@@ -247,19 +364,31 @@ const createGroupTrue = () => {
   document.getElementById("m-short-text").innerHTML = mShortText;
 
   let shortText = "= ";
+  arrayShortTextTrue = [];
+  arrayShortTextTrueFix = [];
   for(let i = 0; i < arrayIndexGroupTrue.length; i++){
     for(let j = 0; j < arrayIndexGroupTrue[i].length; j++){
       const index = arrayIndexGroupTrue[i][j];
       if (i === 0){
         shortText += `${arrayShortText16[index]} + `;
+        arrayShortTextTrue.push(arrayShortText16[index]);
+        arrayShortTextTrueFix.push(arrayShortText16Fix[index]);
       } else if (i === 1){
         shortText += `${arrayShortText8[index]} + `;
+        arrayShortTextTrue.push(arrayShortText8[index]);
+        arrayShortTextTrueFix.push(arrayShortText8Fix[index]);
       } else if (i === 2){
         shortText += `${arrayShortText4[index]} + `;
+        arrayShortTextTrue.push(arrayShortText4[index]);
+        arrayShortTextTrueFix.push(arrayShortText4Fix[index]);
       } else if (i === 3){
         shortText += `${arrayShortText2[index]} + `;
+        arrayShortTextTrue.push(arrayShortText2[index]);
+        arrayShortTextTrueFix.push(arrayShortText2Fix[index]);
       } else if (i === 4){
         shortText += `${arrayShortText1[index]} + `;
+        arrayShortTextTrue.push(arrayShortText1[index]);
+        arrayShortTextTrueFix.push(arrayShortText1Fix[index]);
       }
     }
     if (arrayIndexGroupTrue[i].length > 0){
@@ -271,8 +400,128 @@ const createGroupTrue = () => {
   document.getElementById("short-text").innerHTML = shortText;
 }
 
+const drawLine = (ctx, startPoint, endPoint, color, lineWidth = 2) => {
+  ctx.beginPath();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = lineWidth;
+  ctx.moveTo(startPoint.x, startPoint.y);
+  ctx.lineTo(endPoint.x, endPoint.y);
+  ctx.stroke();
+}
+
+const drawNegative = (ctx, upPoint, downPoint, color, lineWidth = 2) => {
+  ctx.beginPath();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = lineWidth;
+  ctx.moveTo(upPoint.x - 10, upPoint.y);
+  ctx.lineTo(upPoint.x + 10, upPoint.y);
+  ctx.lineTo(downPoint.x, downPoint.y);
+  ctx.lineTo(upPoint.x - 10, upPoint.y);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(downPoint.x, downPoint.y + 5, 5, 0, 2 * Math.PI);
+  ctx.stroke();
+}
+
+const text4Main = ["A", "B", "C", "D"];
+const text4Negative = ["Ā", "B̄", "C̄", "D̄"];
+
+const draw8LineMain = (ctx) => {
+  for(let i = 0; i < 4; i++){
+    drawLine(ctx, {x: 50+i*50, y: 50}, {x: 50+i*50, y: 950}, "black");
+    drawLine(ctx, {x: 75+i*50, y: 150}, {x: 75+i*50, y: 950}, "black");
+    drawLine(ctx, {x: 75+i*50, y: 75}, {x: 75+i*50, y: 100}, "black");
+    drawLine(ctx, {x: 50+i*50, y: 75}, {x: 75+i*50, y: 75}, "black");
+    drawNegative(ctx, {x: 75+i*50, y: 100}, {x: 75+i*50, y: 140}, "black");
+    ctx.fillText(text4Main[i], 50+i*50, 40);
+    ctx.fillText(text4Negative[i], 80+i*50, 175);
+  }
+}
+
+const drawAND = (ctx, logicText, indexLogicText, startPoint) => {
+  drawLine(ctx, {x: 400, y: startPoint.y - 25}, {x: 400, y: startPoint.y + logicText.length*25}, "black");
+  ctx.beginPath();
+  ctx.arc(400, startPoint.y - 12.5 + Math.floor((logicText.length*25)/2), Math.floor((logicText.length*25 + 25)/2), -Math.PI/2, Math.PI/2);
+  ctx.stroke();
+  drawLine(ctx, {x: 400 + Math.floor((logicText.length*25 + 25)/2), y: startPoint.y - 12.5 + Math.floor((logicText.length*25)/2)}, {x: 550, y: startPoint.y - 12.5 + Math.floor((logicText.length*25)/2)}, "black");
+  ctx.fillText(arrayShortTextTrue[indexLogicText], 400 + Math.floor((logicText.length*25 + 25)/2) + 10, startPoint.y - 12.5 + Math.floor((logicText.length*25)/2) - 10);
+  drawLine(ctx, {x: 550, y: startPoint.y - 12.5 + Math.floor((logicText.length*25)/2)}, {x: 800 - Math.abs(arrayShortTextTrueFix.length/2 - indexLogicText)*10, y: 150 + arrayShortTextTrueFix.length*150/2 + indexLogicText*Math.floor(150/arrayShortTextTrueFix.length)}, "black");
+
+
+  for(let i = 0; i < logicText.length; i++){
+    if(logicText[i] === "A"){
+      drawLine(ctx, {x: startPoint.x, y: startPoint.y + 25*i}, {x: 400, y: startPoint.y + 25*i}, "black");
+      ctx.beginPath();
+      ctx.arc(startPoint.x, startPoint.y + 25*i, 5, 0, 2 * Math.PI);
+      ctx.fill();
+    } else if(logicText[i] === "B"){
+      drawLine(ctx, {x: startPoint.x + 50, y: startPoint.y + 25*i}, {x: 400, y: startPoint.y + 25*i}, "black");
+      ctx.beginPath();
+      ctx.arc(startPoint.x + 50, startPoint.y + 25*i, 5, 0, 2 * Math.PI);
+      ctx.fill();
+    } else if(logicText[i] === "C"){
+      drawLine(ctx, {x: startPoint.x + 100, y: startPoint.y + 25*i}, {x: 400, y: startPoint.y + 25*i}, "black");
+      ctx.beginPath();
+      ctx.arc(startPoint.x + 100, startPoint.y + 25*i, 5, 0, 2 * Math.PI);
+      ctx.fill();
+    } else if(logicText[i] === "D"){
+      drawLine(ctx, {x: startPoint.x + 150, y: startPoint.y + 25*i}, {x: 400, y: startPoint.y + 25*i}, "black");
+      ctx.beginPath();
+      ctx.arc(startPoint.x + 150, startPoint.y + 25*i, 5, 0, 2 * Math.PI);
+      ctx.fill();
+    } else if(logicText[i] === "E"){
+      drawLine(ctx, {x: startPoint.x + 25, y: startPoint.y + 25*i}, {x: 400, y: startPoint.y + 25*i}, "black");
+      ctx.beginPath();
+      ctx.arc(startPoint.x + 25, startPoint.y + 25*i, 5, 0, 2 * Math.PI);
+      ctx.fill();
+    } else if(logicText[i] === "F"){
+      drawLine(ctx, {x: startPoint.x + 75, y: startPoint.y + 25*i}, {x: 400, y: startPoint.y + 25*i}, "black");
+      ctx.beginPath();
+      ctx.arc(startPoint.x + 75, startPoint.y + 25*i, 5, 0, 2 * Math.PI);
+      ctx.fill();
+    } else if(logicText[i] === "G"){
+      drawLine(ctx, {x: startPoint.x + 125, y: startPoint.y + 25*i}, {x: 400, y: startPoint.y + 25*i}, "black");
+      ctx.beginPath();
+      ctx.arc(startPoint.x + 125, startPoint.y + 25*i, 5, 0, 2 * Math.PI);
+      ctx.fill();
+    } else if(logicText[i] === "H"){
+      drawLine(ctx, {x: startPoint.x + 175, y: startPoint.y + 25*i}, {x: 400, y: startPoint.y + 25*i}, "black");
+      ctx.beginPath();
+      ctx.arc(startPoint.x + 175, startPoint.y + 25*i, 5, 0, 2 * Math.PI);
+      ctx.fill();
+    }
+  }
+}
+
+const drawOR = (ctx) => {
+  ctx.beginPath();
+  ctx.arc(700, 200 + arrayShortTextTrueFix.length*150/2, 100, -Math.PI/4, Math.PI/4);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(710, 250 + arrayShortTextTrueFix.length*150/2, 135, -Math.PI/3, -1.4*Math.PI/12);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(710, 150 + arrayShortTextTrueFix.length*150/2, 135, 1.4*Math.PI/12, Math.PI/3);
+  ctx.stroke();
+  drawLine(ctx, {x: 830, y: 200 + arrayShortTextTrueFix.length*150/2}, {x: 900, y: 200 + arrayShortTextTrueFix.length*150/2}, "black");
+  ctx.fillText("F", 840, 200 + arrayShortTextTrueFix.length*150/2 - 10);
+}
+
+const draw = () => {
+  const canvas = document.getElementById("logic-canvas");
+  canvas.height = 200 + arrayShortTextTrueFix.length*150;
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.font = "16px Arial";
+  draw8LineMain(ctx);
+  for(let i = 0; i < arrayShortTextTrueFix.length; i++){
+    drawAND(ctx, arrayShortTextTrueFix[i], i, {x: 50, y: 200 + 150*i});
+  }
+  drawOR(ctx);
+}
+
 const handleStart = () => {
-  const arraym = document.getElementById("question-input").value.split(" ");
+  arraym = document.getElementById("question-input").value.split(" ");
   arraymfull = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   for (let i = 0; i < arraym.length; i++) {
     arraymfull[arraym[i]] = 1;
@@ -282,4 +531,5 @@ const handleStart = () => {
   createTrueTable();
   createCacnoTable();
   createGroupTrue();
+  draw();
 };

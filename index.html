@@ -8,23 +8,30 @@
     <link rel="stylesheet" href="./index.css" >
 </head>
 <body>
-    <h2>
-        Nhập hàm logic theo định dạng: 1 2 3 5
+    <header>
+        <h2>Made by Bảo Nguyễn Chí</h2>
+        <p>Mục đích: Học tập</p>
+        <p>Tuyên bố từ chối trách nhiệm nếu người dùng sử dụng sai mục đích</p>
+    </header>
+    <h2 style="color: tomato">
+        Nhập hàm logic theo định dạng: 1 2 3 5 </br>
         Nghĩa là m1,m2,m3,m5
     </h2>
     <div class="question">
         <h2>f(A,B,C,D) = </h2>
-        <input placeholder="Nhập đề theo định dạng" id="question-input">
+        <input placeholder="Nhập đề đúng định dạng" id="question-input">
         <button class="start-button" onclick="handleStart()">START</button>
     </div>
+    <hr>
 
-    <h2>Biểu diễn bằng đại số logic:</h2>
+    <h2 style="color: tomato">Biểu diễn bằng đại số logic:</h2>
     <div class="logic">
         <h2>f(A,B,C,D) = </h2>
         <h2 id="logic-text"></h3>
     </div>
+    <hr>
 
-    <h2>Bảng chân trị: Copy qua word trước rồi mới copy từ word qua ppt</h2>
+    <h2 style="color: tomato">Bảng chân trị: <i>(Copy qua word trước rồi mới copy từ word qua ppt)</i></h2>
     <table class="true-table">
         <tr class="true-table-header">
           <th>STT</th>
@@ -164,8 +171,9 @@
         </tr>
         
       </table>
-    
-    <h2>Bìa Các-nô</h2>
+    <hr>
+
+    <h2 style="color: tomato">Bìa Các-nô:</h2>
     <table class="cacno-table">
         <tr>
           <th>CD\AB</th>
@@ -203,11 +211,17 @@
             <td id="m10" class="cacno-cell"><p>m10</p></td>
         </tr>
     </table>
+    <hr>
 
-    <h2>Rút gọn:</h2>
+    <h2 style="color: tomato">Rút gọn:</h2>
     <h2>F(A, B, C, D)</h2>
     <h2 id="m-short-text"></h2>
     <h2 id="short-text"></h2>
+    <hr>
+
+    <h2 style="color: tomato">Vẽ mạch logic:</h2>
+    <canvas id="logic-canvas" width="1000px" height="1000px">
+
     <script src="./index.js"></script>
 </body>
 </html>
