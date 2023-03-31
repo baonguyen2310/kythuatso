@@ -319,17 +319,12 @@ const handleDuplicateGroupTrue = (arrayGroupTrue, arrayIndexGroupTrue) => {
           count[arrayGroupTrue[i][3]] >= 2
         ){
           arrayGroupTrue.splice(i, 1);
-          for(let k = 0; k < arrayGroup4.length; k++){
-            if(
-              arrayGroup4[k].includes(arrayGroupTrue[i][0]) &&
-              arrayGroup4[k].includes(arrayGroupTrue[i][1]) &&
-              arrayGroup4[k].includes(arrayGroupTrue[i][2]) &&
-              arrayGroup4[k].includes(arrayGroupTrue[i][3])
-            ){
-              const indexDuplicate = arrayIndexGroupTrue.indexOf(k);
-              arrayIndexGroupTrue[2].splice(indexDuplicate, 1); //index và giá trị quá phức tạp để nhớ cho lần sau
-            }
-          }
+          const indexDuplicate = i - arrayIndexGroupTrue[0].length - arrayIndexGroupTrue[1].length;
+          arrayIndexGroupTrue[2].splice(indexDuplicate, 1);
+          count[arrayGroupTrue[i][0]]--;
+          count[arrayGroupTrue[i][1]]--;
+          count[arrayGroupTrue[i][2]]--;
+          count[arrayGroupTrue[i][3]]--;
         }
     }
   }
