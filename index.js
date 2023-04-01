@@ -421,66 +421,67 @@ const drawNegative = (ctx, upPoint, downPoint, color, lineWidth = 2) => {
 const text4Main = ["A", "B", "C", "D"];
 const text4Negative = ["Ā", "B̄", "C̄", "D̄"];
 
-const draw8LineMain = (ctx) => {
+const draw8LineMain = (ctx, color) => {
   for(let i = 0; i < 4; i++){
-    drawLine(ctx, {x: 50+i*50, y: 50}, {x: 50+i*50, y: 950}, "black");
-    drawLine(ctx, {x: 75+i*50, y: 150}, {x: 75+i*50, y: 950}, "black");
-    drawLine(ctx, {x: 75+i*50, y: 75}, {x: 75+i*50, y: 100}, "black");
-    drawLine(ctx, {x: 50+i*50, y: 75}, {x: 75+i*50, y: 75}, "black");
-    drawNegative(ctx, {x: 75+i*50, y: 100}, {x: 75+i*50, y: 140}, "black");
+    drawLine(ctx, {x: 50+i*50, y: 50}, {x: 50+i*50, y: 950}, color);
+    drawLine(ctx, {x: 75+i*50, y: 150}, {x: 75+i*50, y: 950}, color);
+    drawLine(ctx, {x: 75+i*50, y: 75}, {x: 75+i*50, y: 100}, color);
+    drawLine(ctx, {x: 50+i*50, y: 75}, {x: 75+i*50, y: 75}, color);
+    drawNegative(ctx, {x: 75+i*50, y: 100}, {x: 75+i*50, y: 140}, color);
+    ctx.fillStyle = color;
     ctx.fillText(text4Main[i], 50+i*50, 40);
     ctx.fillText(text4Negative[i], 80+i*50, 175);
   }
 }
 
-const drawAND = (ctx, logicText, indexLogicText, startPoint) => {
-  drawLine(ctx, {x: 400, y: startPoint.y - 25}, {x: 400, y: startPoint.y + logicText.length*25}, "black");
+const drawAND = (ctx, logicText, indexLogicText, startPoint, color) => {
+  drawLine(ctx, {x: 400, y: startPoint.y - 25}, {x: 400, y: startPoint.y + logicText.length*25}, color);
   ctx.beginPath();
   ctx.arc(400, startPoint.y - 12.5 + Math.floor((logicText.length*25)/2), Math.floor((logicText.length*25 + 25)/2), -Math.PI/2, Math.PI/2);
   ctx.stroke();
-  drawLine(ctx, {x: 400 + Math.floor((logicText.length*25 + 25)/2), y: startPoint.y - 12.5 + Math.floor((logicText.length*25)/2)}, {x: 550, y: startPoint.y - 12.5 + Math.floor((logicText.length*25)/2)}, "black");
+  drawLine(ctx, {x: 400 + Math.floor((logicText.length*25 + 25)/2), y: startPoint.y - 12.5 + Math.floor((logicText.length*25)/2)}, {x: 550, y: startPoint.y - 12.5 + Math.floor((logicText.length*25)/2)}, color);
   ctx.fillText(arrayShortTextTrue[indexLogicText], 400 + Math.floor((logicText.length*25 + 25)/2) + 10, startPoint.y - 12.5 + Math.floor((logicText.length*25)/2) - 10);
-  drawLine(ctx, {x: 550, y: startPoint.y - 12.5 + Math.floor((logicText.length*25)/2)}, {x: 800 - Math.abs(arrayShortTextTrueFix.length/2 - indexLogicText)*10, y: 150 + arrayShortTextTrueFix.length*150/2 + indexLogicText*Math.floor(150/arrayShortTextTrueFix.length)}, "black");
+  drawLine(ctx, {x: 550, y: startPoint.y - 12.5 + Math.floor((logicText.length*25)/2)}, {x: 700, y: offsetY + arrayShortTextTrueFix.length*150/2 + indexLogicText*10}, color);
 
 
   for(let i = 0; i < logicText.length; i++){
     if(logicText[i] === "A"){
-      drawLine(ctx, {x: startPoint.x, y: startPoint.y + 25*i}, {x: 400, y: startPoint.y + 25*i}, "black");
+      drawLine(ctx, {x: startPoint.x, y: startPoint.y + 25*i}, {x: 400, y: startPoint.y + 25*i}, color);
       ctx.beginPath();
       ctx.arc(startPoint.x, startPoint.y + 25*i, 5, 0, 2 * Math.PI);
       ctx.fill();
     } else if(logicText[i] === "B"){
-      drawLine(ctx, {x: startPoint.x + 50, y: startPoint.y + 25*i}, {x: 400, y: startPoint.y + 25*i}, "black");
+      drawLine(ctx, {x: startPoint.x + 50, y: startPoint.y + 25*i}, {x: 400, y: startPoint.y + 25*i}, color);
       ctx.beginPath();
       ctx.arc(startPoint.x + 50, startPoint.y + 25*i, 5, 0, 2 * Math.PI);
       ctx.fill();
     } else if(logicText[i] === "C"){
-      drawLine(ctx, {x: startPoint.x + 100, y: startPoint.y + 25*i}, {x: 400, y: startPoint.y + 25*i}, "black");
+      drawLine(ctx, {x: startPoint.x + 100, y: startPoint.y + 25*i}, {x: 400, y: startPoint.y + 25*i}, color);
       ctx.beginPath();
       ctx.arc(startPoint.x + 100, startPoint.y + 25*i, 5, 0, 2 * Math.PI);
       ctx.fill();
     } else if(logicText[i] === "D"){
-      drawLine(ctx, {x: startPoint.x + 150, y: startPoint.y + 25*i}, {x: 400, y: startPoint.y + 25*i}, "black");
+      drawLine(ctx, {x: startPoint.x + 150, y: startPoint.y + 25*i}, {x: 400, y: startPoint.y + 25*i}, color);
       ctx.beginPath();
       ctx.arc(startPoint.x + 150, startPoint.y + 25*i, 5, 0, 2 * Math.PI);
       ctx.fill();
     } else if(logicText[i] === "E"){
-      drawLine(ctx, {x: startPoint.x + 25, y: startPoint.y + 25*i}, {x: 400, y: startPoint.y + 25*i}, "black");
+      drawLine(ctx, {x: startPoint.x + 25, y: startPoint.y + 25*i}, {x: 400, y: startPoint.y + 25*i}, color);
       ctx.beginPath();
       ctx.arc(startPoint.x + 25, startPoint.y + 25*i, 5, 0, 2 * Math.PI);
       ctx.fill();
     } else if(logicText[i] === "F"){
-      drawLine(ctx, {x: startPoint.x + 75, y: startPoint.y + 25*i}, {x: 400, y: startPoint.y + 25*i}, "black");
+      drawLine(ctx, {x: startPoint.x + 75, y: startPoint.y + 25*i}, {x: 400, y: startPoint.y + 25*i}, color);
       ctx.beginPath();
       ctx.arc(startPoint.x + 75, startPoint.y + 25*i, 5, 0, 2 * Math.PI);
       ctx.fill();
     } else if(logicText[i] === "G"){
-      drawLine(ctx, {x: startPoint.x + 125, y: startPoint.y + 25*i}, {x: 400, y: startPoint.y + 25*i}, "black");
+      drawLine(ctx, {x: startPoint.x + 125, y: startPoint.y + 25*i}, {x: 400, y: startPoint.y + 25*i}, color);
       ctx.beginPath();
       ctx.arc(startPoint.x + 125, startPoint.y + 25*i, 5, 0, 2 * Math.PI);
       ctx.fill();
     } else if(logicText[i] === "H"){
-      drawLine(ctx, {x: startPoint.x + 175, y: startPoint.y + 25*i}, {x: 400, y: startPoint.y + 25*i}, "black");
+      drawLine(ctx, {x: startPoint.x + 175, y: startPoint.y + 25*i}, {x: 400, y: startPoint.y + 25*i}, color);
       ctx.beginPath();
       ctx.arc(startPoint.x + 175, startPoint.y + 25*i, 5, 0, 2 * Math.PI);
       ctx.fill();
@@ -488,7 +489,21 @@ const drawAND = (ctx, logicText, indexLogicText, startPoint) => {
   }
 }
 
-const drawOR = (ctx) => {
+let offsetY;
+const calculateOffset = () => {
+  if (arrayShortTextTrueFix.length <= 3){
+    offsetY = 180;
+  } else {
+    offsetY = 180;
+  }
+}
+
+const drawOR = (ctx, color) => {
+  for(let i = 0; i < arrayShortTextTrueFix.length; i++){
+    drawLine(ctx, {x: 700, y: offsetY + arrayShortTextTrueFix.length*150/2 + i*10}, {x: 800, y: offsetY + arrayShortTextTrueFix.length*150/2 + i*10}, color);
+  }
+
+  ctx.strokeStyle = color;
   ctx.beginPath();
   ctx.arc(700, 200 + arrayShortTextTrueFix.length*150/2, 100, -Math.PI/4, Math.PI/4);
   ctx.stroke();
@@ -498,21 +513,30 @@ const drawOR = (ctx) => {
   ctx.beginPath();
   ctx.arc(710, 150 + arrayShortTextTrueFix.length*150/2, 135, 1.4*Math.PI/12, Math.PI/3);
   ctx.stroke();
-  drawLine(ctx, {x: 830, y: 200 + arrayShortTextTrueFix.length*150/2}, {x: 900, y: 200 + arrayShortTextTrueFix.length*150/2}, "black");
+  drawLine(ctx, {x: 830, y: 200 + arrayShortTextTrueFix.length*150/2}, {x: 900, y: 200 + arrayShortTextTrueFix.length*150/2}, color);
   ctx.fillText("F", 840, 200 + arrayShortTextTrueFix.length*150/2 - 10);
 }
 
-const draw = () => {
+const draw = (color, backgroundColor) => {
+  if(color === ""){
+    color = "black";
+  }
+  if(backgroundColor === ""){
+    backgroundColor = "white";
+  }
   const canvas = document.getElementById("logic-canvas");
   canvas.height = 200 + arrayShortTextTrueFix.length*150;
   const ctx = canvas.getContext("2d");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.font = "16px Arial";
-  draw8LineMain(ctx);
+  ctx.fillStyle = backgroundColor;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  calculateOffset();
+  draw8LineMain(ctx, color);
   for(let i = 0; i < arrayShortTextTrueFix.length; i++){
-    drawAND(ctx, arrayShortTextTrueFix[i], i, {x: 50, y: 200 + 150*i});
+    drawAND(ctx, arrayShortTextTrueFix[i], i, {x: 50, y: 200 + 150*i}, color);
   }
-  drawOR(ctx);
+  drawOR(ctx, color);
 }
 
 const handleStart = () => {
@@ -526,5 +550,5 @@ const handleStart = () => {
   createTrueTable();
   createCacnoTable();
   createGroupTrue();
-  draw();
+  draw("black", "white");
 };
