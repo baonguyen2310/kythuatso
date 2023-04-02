@@ -298,7 +298,8 @@ const addGroupTrue = (arrayGroupTrue, arrayGroup, arrayIndexGroupTrue) => {
   }
 }
 
-//fixing
+//fixing group 4
+//fixing group 2
 const handleDuplicateGroupTrue = (arrayGroupTrue, arrayIndexGroupTrue) => {
   const count = {};
   for(let i = 0; i < arraym.length; i++) {
@@ -328,24 +329,59 @@ const handleDuplicateGroupTrue = (arrayGroupTrue, arrayIndexGroupTrue) => {
         }
     }
   }
+
+  //xử lý trường hợp group 2 ô, chưa sửa được
+  for(let i = 0; i < arrayGroupTrue.length; i++){
+    if(arrayGroupTrue[i].length === 2){  //xử lý trường hợp group 2 ô
+      if(
+          count[arrayGroupTrue[i][0]] >= 2 &&
+          count[arrayGroupTrue[i][1]] >= 2 &&
+          count[arrayGroupTrue[i][2]] >= 2 &&
+          count[arrayGroupTrue[i][3]] >= 2
+        ){
+          arrayGroupTrue.splice(i, 1);
+          const indexDuplicate = i - arrayIndexGroupTrue[0].length - arrayIndexGroupTrue[1].length - arrayIndexGroupTrue[2].length;
+          arrayIndexGroupTrue[3].splice(indexDuplicate, 1);
+          count[arrayGroupTrue[i][0]]--;
+          count[arrayGroupTrue[i][1]]--;
+          count[arrayGroupTrue[i][2]]--;
+          count[arrayGroupTrue[i][3]]--;
+        }
+    }
+  }
   
+}
+
+const hardFix = () => {
+  const hardFixIndex = document.getElementById("hardFixInput").value;
+  if(hardFixIndex != ""){
+    arrayGroupTrue.splice(hardFixIndex, 1);
+    const lengthG16 = arrayIndexGroupTrue[0].length;
+    const lengthG8 = arrayIndexGroupTrue[1].length;
+    const lengthG4 = arrayIndexGroupTrue[2].length;
+    const lengthG2 = arrayIndexGroupTrue[3].length;
+    const lengthG1 = arrayIndexGroupTrue[4].length;
+    if(hardFixIndex <= lengthG16 - 1){
+      arrayIndexGroupTrue[0].splice(hardFixIndex, 1);
+    } else if(hardFixIndex <= lengthG16 + lengthG8 - 1){
+      arrayIndexGroupTrue[1].splice(hardFixIndex - lengthG16, 1);
+    } else if(hardFixIndex <= lengthG16 + lengthG8 + lengthG4 - 1){
+      arrayIndexGroupTrue[2].splice(hardFixIndex - lengthG16 - lengthG8, 1);
+    } else if(hardFixIndex <= lengthG16 + lengthG8 + lengthG4 + lengthG2 - 1){
+      arrayIndexGroupTrue[3].splice(hardFixIndex - lengthG16 - lengthG8 - lengthG4, 1);
+    } else if(hardFixIndex <= lengthG16 + lengthG8 + lengthG4 + lengthG2 + lengthG1 - 1){
+      arrayIndexGroupTrue[4].splice(hardFixIndex - lengthG16 - lengthG8 - lengthG4 - lengthG2, 1);
+    }
+  }
+
+  printShortText();
+  draw("black", "white");
 }
 
 let arrayShortTextTrue = [];
 let arrayShortTextTrueFix = [];
 
-
-const createGroupTrue = () => {
-  arrayGroupTrue = [];
-  arrayIndexGroupTrue = [[],[],[],[],[]];
-  addGroupTrue(arrayGroupTrue, arrayGroup16, arrayIndexGroupTrue); //theo thứ tự ưu tiên
-  addGroupTrue(arrayGroupTrue, arrayGroup8, arrayIndexGroupTrue);
-  addGroupTrue(arrayGroupTrue, arrayGroup4, arrayIndexGroupTrue);
-  addGroupTrue(arrayGroupTrue, arrayGroup2, arrayIndexGroupTrue);
-  addGroupTrue(arrayGroupTrue, arrayGroup1, arrayIndexGroupTrue);
-
-  handleDuplicateGroupTrue(arrayGroupTrue, arrayIndexGroupTrue);
-
+const printShortText = () => {
   let mShortText = "= ";
   for(let i = 0; i < arrayGroupTrue.length; i++){
     mShortText += "(";
@@ -395,6 +431,20 @@ const createGroupTrue = () => {
   document.getElementById("short-text").innerHTML = shortText;
 }
 
+const createGroupTrue = () => {
+  arrayGroupTrue = [];
+  arrayIndexGroupTrue = [[],[],[],[],[]];
+  addGroupTrue(arrayGroupTrue, arrayGroup16, arrayIndexGroupTrue); //theo thứ tự ưu tiên
+  addGroupTrue(arrayGroupTrue, arrayGroup8, arrayIndexGroupTrue);
+  addGroupTrue(arrayGroupTrue, arrayGroup4, arrayIndexGroupTrue);
+  addGroupTrue(arrayGroupTrue, arrayGroup2, arrayIndexGroupTrue);
+  addGroupTrue(arrayGroupTrue, arrayGroup1, arrayIndexGroupTrue);
+
+  handleDuplicateGroupTrue(arrayGroupTrue, arrayIndexGroupTrue);
+
+  printShortText();
+}
+
 const drawLine = (ctx, startPoint, endPoint, color, lineWidth = 2) => {
   ctx.beginPath();
   ctx.strokeStyle = color;
@@ -423,8 +473,8 @@ const text4Negative = ["Ā", "B̄", "C̄", "D̄"];
 
 const draw8LineMain = (ctx, color) => {
   for(let i = 0; i < 4; i++){
-    drawLine(ctx, {x: 50+i*50, y: 50}, {x: 50+i*50, y: 950}, color);
-    drawLine(ctx, {x: 75+i*50, y: 150}, {x: 75+i*50, y: 950}, color);
+    drawLine(ctx, {x: 50+i*50, y: 50}, {x: 50+i*50, y: 200 + arrayShortTextTrueFix.length*150}, color);
+    drawLine(ctx, {x: 75+i*50, y: 150}, {x: 75+i*50, y: 200 + arrayShortTextTrueFix.length*150}, color);
     drawLine(ctx, {x: 75+i*50, y: 75}, {x: 75+i*50, y: 100}, color);
     drawLine(ctx, {x: 50+i*50, y: 75}, {x: 75+i*50, y: 75}, color);
     drawNegative(ctx, {x: 75+i*50, y: 100}, {x: 75+i*50, y: 140}, color);
@@ -525,7 +575,7 @@ const draw = (color, backgroundColor) => {
     backgroundColor = "white";
   }
   const canvas = document.getElementById("logic-canvas");
-  canvas.height = 200 + arrayShortTextTrueFix.length*150;
+  canvas.height = 250 + arrayShortTextTrueFix.length*150;
   const ctx = canvas.getContext("2d");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.font = "16px Arial";
@@ -540,11 +590,19 @@ const draw = (color, backgroundColor) => {
 }
 
 const handleStart = () => {
-  arraym = document.getElementById("question-input").value.split(" ");
+  arraym = document.getElementById("question-input").value.split(",");
   arraymfull = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   for (let i = 0; i < arraym.length; i++) {
     arraymfull[arraym[i]] = 1;
   }
+
+  let logicQuestionText = "f(A,B,C,D) = Σ(";
+  for(let i = 0; i < arraym.length; i++) {
+    logicQuestionText += "m" + arraym[i] + ",";
+  }
+  logicQuestionText = logicQuestionText.slice(0, logicQuestionText.length - 1);
+  logicQuestionText += ")";
+  document.getElementById("logic-question").innerHTML = logicQuestionText;
 
   createLogic();
   createTrueTable();

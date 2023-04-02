@@ -14,14 +14,15 @@
         <p>Tuyên bố từ chối trách nhiệm nếu người dùng sử dụng sai mục đích</p>
     </header>
     <h2 style="color: tomato">
-        Nhập hàm logic theo định dạng: 1 2 3 5 </br>
-        Nghĩa là m1,m2,m3,m5
+        Nhập hàm logic theo định dạng: 1,2,3,5 nghĩa là m1,m2,m3,m5 </br>
     </h2>
     <div class="question">
-        <h2>f(A,B,C,D) = </h2>
-        <input placeholder="Nhập đề đúng định dạng" id="question-input">
+        <h2>f(A,B,C,D) = Σ( </h2>
+        <input placeholder="1,2,3,5,..." id="question-input">
+        <h2>)</h2>
         <button class="start-button" onclick="handleStart()">START</button>
     </div>
+    <h2 id="logic-question">f(A,B,C,D) = Σ() </h2>
     <hr>
 
     <h2 style="color: tomato">Biểu diễn bằng đại số logic:</h2>
@@ -31,7 +32,7 @@
     </div>
     <hr>
 
-    <h2 style="color: tomato">Bảng chân trị: <i>(Copy qua word trước rồi mới copy từ word qua ppt)</i></h2>
+    <h2 style="color: tomato">Bảng chân trị:</h2>
     <table class="true-table">
         <tr class="true-table-header">
           <th>STT</th>
@@ -217,6 +218,8 @@
     <h2>F(A, B, C, D)</h2>
     <h2 id="m-short-text"></h2>
     <h2 id="short-text"></h2>
+    <input id="hardFixInput" placeholder="Nhập index cần hard fix (1index/time)">
+    <button id="hardFixButton" onclick="hardFix()">Fix</button>
     <hr>
 
     <h2 style="color: tomato">Vẽ mạch logic:</h2>
