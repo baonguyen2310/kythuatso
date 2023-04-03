@@ -830,7 +830,7 @@ const handleStart = () => {
     createGroupTrue();
     draw("black", "white");
   } else {
-    fetch("http://localhost:5000/freecode", {
+    fetch("https://kythuatso-server-production.up.railway.app/freecode", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
